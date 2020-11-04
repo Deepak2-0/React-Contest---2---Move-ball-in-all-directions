@@ -19,6 +19,40 @@ const App = () => {
     });
   };
 
+  const start = () => {
+    setRenderBall(true);
+  };
+
+  const handleKeyPress = (event) => {
+    let xCopy = x;
+    let yCopy = y;
+
+    if (event.keyCode === 39) {
+      xCopy = x + 5;
+      setX(xCopy);
+    } else if (event.keyCode === 37) {
+      xCopy = x - 5;
+      setX(xCopy);
+    } else if (event.keyCode === 38) {
+      yCopy = y - 5;
+      setY(yCopy);
+    } else if (event.keyCode === 40) {
+      yCopy = y + 5;
+      setY(yCopy);
+    }
+    setBallPosition({
+      left: `${xCopy}px`,
+      top: `${yCopy}px`
+    });
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  });
+
   const renderChoice = () => {
     if (renderBall) {
       return <div className="ball" style={ballPosition}></div>;
@@ -29,61 +63,6 @@ const App = () => {
         </button>
       );
   };
-
-  const start = () => {
-    setRenderBall(true);
-  };
-
-  const handleKeyPress = (event) => {
-    if (event.keyCode === 39) {
-      setX((prevValue) => {
-        return prevValue + 5;
-      });
-      setBallPosition((prevValue) => {
-        return {
-          left: `${x} px`,
-          top: prevValue.top
-        };
-      });
-    } else if (event.keyCode === 37) {
-      setX((prevValue) => {
-        return prevValue - 5;
-      });
-      setBallPosition((prevValue) => {
-        return {
-          left: `${x} px`,
-          top: prevValue.top
-        };
-      });
-    } else if (event.keyCode === 38) {
-      setY((prevValue) => {
-        return prevValue - 5;
-      });
-      setBallPosition((prevValue) => {
-        return {
-          left: prevValue.left,
-          top: `${y} px`
-        };
-      });
-    } else if (event.keyCode === 40) {
-      setY((prevValue) => {
-        return prevValue + 5;
-      });
-      setBallPosition((prevValue) => {
-        return {
-          left: prevValue.left,
-          top: `${y} px`
-        };
-      });
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyPress);
-    return () => {
-      document.removeEventListener("keydown", handleKeyPress);
-    };
-  }, []);
 
   return (
     <div className="playground">
